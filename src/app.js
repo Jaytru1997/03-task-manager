@@ -1,34 +1,34 @@
+require("dotenv").config();
 var express = require("express");
 var app = express();
+var connectDB = require("./db/connect");
 const tasks = require("./routes/tasks");
-const connectDB = require("./db/connect");
-require("dotenv").config();
-
 
 //middleware
 app.use(express.json());
 
-
 //routes
-app.get("/", (req,res) => {
-    res.send("Hello Task Manager");
-})
+app.get("/hello", (req, res) => {
+  res.send("Task Manager Saying Hello!");
+});
 
-app.use("/api/v1/tasks", tasks)
-
-
-
-const port = 3000;
+app.use("/api/v1/tasks", tasks);
 
 
+
+//connect database
 const start = async () => {
-    try {
-        await connectDB(process.env.MONGO_URI);
-        app.listen(port, console.log(`Listening on port ${port}...`));
-
-    } catch (error) {
-        console.log(error);
-    }
-}
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
+  })
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 start();
+
+
+module.exports = app;
