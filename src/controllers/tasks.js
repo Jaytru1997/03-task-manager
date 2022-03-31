@@ -1,4 +1,4 @@
-
+var Task = require("../modules/task");
 
 const getAllTasks = (req,res) => {
     res.send("get all tasks");
@@ -13,9 +13,9 @@ const getTask = (req,res) => {
     // next();
 }
 
-const createTask = (req,res) => {
-    res.json(req.body);
-    // next();
+const createTask = async (req,res) => {
+    const task = await Task.create(req.body);
+    res.json(task);
 }
 
 const updateTask = (req,res) => {

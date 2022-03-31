@@ -1,29 +1,34 @@
-// console.log('Task Manager App')
+require("dotenv").config();
 var express = require("express");
 var app = express();
-// var bodyParser = require("body-parser");
+var connectDB = require("./db/connect");
 const tasks = require("./routes/tasks");
 
-
 //middleware
-// app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 
-
 //routes
-app.get("/hello", (req,res) => {
-    res.send("Task Manager Saying Hello!");
+app.get("/hello", (req, res) => {
+  res.send("Task Manager Saying Hello!");
 });
 
-app.use("/api/v1/tasks",tasks);
+app.use("/api/v1/tasks", tasks);
 
 
 
+//connect database
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
+  })
+  } catch (err) {
+    console.log(err);
+  }
+};
 
+start();
 
-
-const port = 3000; 
-
-app.listen(port, console.log(`listening on port ${port}...`))
 
 module.exports = app;
