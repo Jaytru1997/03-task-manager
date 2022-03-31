@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 
-
+//validations using schema
 const TaskSchema = new mongoose.Schema({
     name: {
         type: String,
